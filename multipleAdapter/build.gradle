@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = '0.1.1'
+version = '0.1.2'
 
 android {
     compileSdkVersion 24
@@ -35,8 +35,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-def siteUrl = 'https://github.com/JYXie233/JYMultipleAdapter'   // 项目的主页
-def gitUrl = 'https://github.com/JYXie233/JYMultipleAdapter.git'   // Git仓库的url
+def siteUrl = 'https://github.com/JYXie233/WidgetLibrary'   // 项目的主页
+def gitUrl = 'https://github.com/JYXie233/WidgetLibrary.git'   // Git仓库的url
 group = "com.xjy.widget"            // Maven Group ID for the artifact，一般填你唯一的包名
 install {
     repositories.mavenInstaller {
