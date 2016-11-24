@@ -9,7 +9,7 @@ import android.util.AttributeSet;
  * Time: 17:41
  * FIXME
  */
-public class JYRefreshLayout extends EventDispenseLayout {
+public class JYRefreshLayout extends CanRefreshLayout {
 
     public JYRefreshLayout(Context context) {
         this(context, null);

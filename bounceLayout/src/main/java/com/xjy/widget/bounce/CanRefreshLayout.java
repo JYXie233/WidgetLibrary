@@ -3,16 +3,12 @@ package com.xjy.widget.bounce;
 import android.content.Context;
 import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
-import android.support.v4.view.NestedScrollingChild;
-import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
 /**
@@ -21,9 +17,9 @@ import android.widget.Scroller;
  * Time: 14:27
  * FIXME
  */
-public abstract class EventDispenseLayout extends ViewGroup {
+public abstract class CanRefreshLayout extends ViewGroup {
 
-    public static String TAG = EventDispenseLayout.class.getSimpleName();
+    public static String TAG = CanRefreshLayout.class.getSimpleName();
 
     //  默认刷新时间
     private static final int DEFAULT_DURATION = 300;
@@ -105,15 +101,15 @@ public abstract class EventDispenseLayout extends ViewGroup {
     private Scroller mScroller = new Scroller(getContext());
 
 
-    public EventDispenseLayout(Context context) {
+    public CanRefreshLayout(Context context) {
         this(context, null);
     }
 
-    public EventDispenseLayout(Context context, AttributeSet attrs) {
+    public CanRefreshLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public EventDispenseLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CanRefreshLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -804,12 +800,12 @@ public abstract class EventDispenseLayout extends ViewGroup {
     }
 
 
-    private IEventHandlePart getHeaderInterface() {
-        return (IEventHandlePart) mHeaderView;
+    private CanRefresh getHeaderInterface() {
+        return (CanRefresh) mHeaderView;
     }
 
-    private IEventHandlePart getFooterInterface() {
-        return (IEventHandlePart) mFooterView;
+    private CanRefresh getFooterInterface() {
+        return (CanRefresh) mFooterView;
     }
 
 

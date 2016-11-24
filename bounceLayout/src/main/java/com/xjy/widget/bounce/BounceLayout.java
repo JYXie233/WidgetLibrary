@@ -1,7 +1,6 @@
 package com.xjy.widget.bounce;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import android.widget.TextView;
  * Time: 16:47
  * FIXME
  */
-public class BounceLayout extends EventDispenseLayout{
+public class BounceLayout extends CanRefreshLayout {
 
     private static int headerBackgroundColor = 0xffd4d4d4;
 
@@ -67,7 +66,7 @@ public class BounceLayout extends EventDispenseLayout{
         BounceLayout.footerText = footerText;
     }
 
-    private class HeaderOrFooter extends RelativeLayout implements IEventHandlePart {
+    private class HeaderOrFooter extends RelativeLayout implements CanRefresh {
 
         private boolean mIsHeader = false;
 

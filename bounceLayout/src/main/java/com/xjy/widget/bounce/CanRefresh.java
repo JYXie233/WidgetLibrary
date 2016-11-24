@@ -4,7 +4,7 @@ package com.xjy.widget.bounce;
  * Created by tom on 16/11/23.
  */
 
-public interface IEventHandlePart {
+public interface CanRefresh {
     /**
      * 重置
      */
