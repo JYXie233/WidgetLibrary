@@ -26,6 +26,9 @@ public class JYRefreshLayout extends CanRefreshLayout {
 
     @Override
     public void onInflateHeaderFooter() {
-
+        JYRefreshHeader header = new JYRefreshHeader(getContext());
+        JYRefreshHeader footer = new JYRefreshHeader(getContext());
+        setHeaderView(header);
+        setFooterView(footer);
     }
 }  

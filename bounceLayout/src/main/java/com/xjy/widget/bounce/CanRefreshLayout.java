@@ -97,6 +97,9 @@ public abstract class CanRefreshLayout extends ViewGroup {
     //  一个缓存值
     private int tempY;
 
+    private boolean isRefreshingOrLoadMoreing = false;
+
+    private View mKeepView;
 
     private Scroller mScroller = new Scroller(getContext());
 
@@ -273,6 +276,15 @@ public abstract class CanRefreshLayout extends ViewGroup {
             mContentView.layout(left, top, right, bottom);
         }
 
+        if (getKeepView() != null){
+            MarginLayoutParams lp = (MarginLayoutParams) mKeepView.getLayoutParams();
+            final int left = paddingLeft + lp.leftMargin;
+            final int top = paddingTop + lp.topMargin + mContentOffY;
+            final int right = left + mKeepView.getMeasuredWidth();
+            final int bottom = top + mKeepView.getMeasuredHeight();
+            mKeepView.layout(left, top, right, bottom);
+        }
+
     }
 
 
@@ -302,7 +314,18 @@ public abstract class CanRefreshLayout extends ViewGroup {
             measureChildWithMargins(mContentView, widthMeasureSpec, 0, heightMeasureSpec, 0);
         }
 
+        if (getKeepView() != null){
+            measureChildWithMargins(mKeepView, widthMeasureSpec, 0, heightMeasureSpec, 0);
+        }
 
+
+    }
+
+    private View getKeepView(){
+        if (mKeepView == null){
+            mKeepView = findViewWithTag("Keep it");
+        }
+        return mKeepView;
     }
 
 
@@ -312,7 +335,7 @@ public abstract class CanRefreshLayout extends ViewGroup {
      * @return
      */
     private boolean canRefresh() {
-        return mRefreshEnabled && mHeaderView != null && !canChildScrollUp();
+        return mRefreshEnabled && mHeaderView != null && !canChildScrollUp() && !isRefreshingOrLoadMoreing;
     }
 
     /**
@@ -321,7 +344,7 @@ public abstract class CanRefreshLayout extends ViewGroup {
      * @return
      */
     private boolean canLoadMore() {
-        return mLoadMoreEnabled && mFooterView != null && !canChildScrollDown();
+        return mLoadMoreEnabled && mFooterView != null && !canChildScrollDown() && !isRefreshingOrLoadMoreing;
     }
 
 
@@ -671,12 +694,12 @@ public abstract class CanRefreshLayout extends ViewGroup {
      * 刷新完成
      */
     public void refreshComplete() {
-
+        isRefreshingOrLoadMoreing = false;
+        getHeaderInterface().onComplete();
         postDelayed(new Runnable() {
             @Override
             public void run() {
                 smoothMove(true, false, 0, 0);
-                getHeaderInterface().onComplete();
                 getHeaderInterface().onReset();
             }
         }, mDuration);
@@ -698,12 +721,12 @@ public abstract class CanRefreshLayout extends ViewGroup {
      * 加载更多完成
      */
     public void loadMoreComplete() {
-
+        isRefreshingOrLoadMoreing = false;
+        getFooterInterface().onComplete();
         postDelayed(new Runnable() {
             @Override
             public void run() {
                 smoothMove(false, false, mContentView.getMeasuredHeight() - getMeasuredHeight(), 0);
-                getFooterInterface().onComplete();
                 getFooterInterface().onReset();
             }
         }, mDuration);
@@ -734,6 +757,7 @@ public abstract class CanRefreshLayout extends ViewGroup {
 
     private void refreshing() {
         if (mOnRefreshListener != null) {
+            isRefreshingOrLoadMoreing = true;
             mOnRefreshListener.onRefresh();
         }
 
@@ -741,6 +765,7 @@ public abstract class CanRefreshLayout extends ViewGroup {
 
     private void loadingMore() {
         if (mOnLoadMoreListener != null) {
+            isRefreshingOrLoadMoreing = true;
             mOnLoadMoreListener.onLoadMore();
         }
 

@@ -24,9 +24,15 @@ public abstract class AbsBaseProvider<M,VH extends MultipleViewHolder>{
     }
 
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        VH multipleViewHolder = (VH) new MultipleViewHolder(LayoutInflater.from(getContext()).inflate(onInflateLayout(), parent, false));
-        multipleViewHolder.setKeep(isKeep());
-        return multipleViewHolder;
+        if (onInflateActionLayout() == 0) {
+            VH multipleViewHolder = (VH) new MultipleViewHolder(LayoutInflater.from(getContext()).inflate(onInflateLayout(), parent, false));
+            multipleViewHolder.setKeep(isKeep());
+            return multipleViewHolder;
+        }else{
+            VH multipleViewHolder = (VH) new MultipleViewHolder(mContext, onInflateLayout(), onInflateActionLayout());
+            multipleViewHolder.setKeep(isKeep());
+            return multipleViewHolder;
+        }
     }
 
     public abstract int onInflateLayout();
@@ -63,5 +69,9 @@ public abstract class AbsBaseProvider<M,VH extends MultipleViewHolder>{
 
     public void setKeep(boolean keep) {
         isKeep = keep;
+    }
+
+    public int onInflateActionLayout(){
+        return 0;
     }
 }

@@ -18,7 +18,6 @@ import com.xjy.widget.example.R;
 
 public class ContactActivity extends AppCompatActivity {
     private AbsHeaderFooterProvider<String> headerFooterProvider;
-    private AbsHeaderFooterProvider<String> headerFooterProviderNoKeep;
     private MultipleAdapter multipleAdapter;
 
     @Override
@@ -37,12 +36,11 @@ public class ContactActivity extends AppCompatActivity {
         headerFooterProvider = new AbsHeaderFooterProvider<String>() {
             @Override
             public int onInflateLayout() {
-                return R.layout.item_simple;
+                return R.layout.item_contact;
             }
 
             @Override
             public void onBindViewHolder(MultipleViewHolder viewHolder, int position, String item) {
-                viewHolder.setBackground(R.id.root, R.color.colorAccent);
                 viewHolder.setText(R.id.textView, "header:" + position);
             }
         };
@@ -58,22 +56,10 @@ public class ContactActivity extends AppCompatActivity {
             }
         });
 
-        headerFooterProviderNoKeep = new AbsHeaderFooterProvider<String>() {
-            @Override
-            public int onInflateLayout() {
-                return R.layout.item_simple;
-            }
 
-            @Override
-            public void onBindViewHolder(MultipleViewHolder viewHolder, int position, String item) {
-                viewHolder.setBackground(R.id.root, R.color.colorAccent);
-                viewHolder.setText(R.id.textView, "header:" + position);
-            }
-        };
 
         headerFooterProvider.setKeep(true);
 
-        headerFooterProviderNoKeep.setKeep(true);
 
         for (int i = 0; i < 8; i++) {
             generateData(i);
@@ -105,37 +91,16 @@ public class ContactActivity extends AppCompatActivity {
                         multipleAdapter.toggleExpand(position, true);
                     }
                 });
-
-
             }
         }).start();
     }
 
-    public class MyHeader extends AbsHeaderFooterProvider<String>{
-
-        @Override
-        public int onInflateLayout() {
-            return 0;
-        }
-
-        @Override
-        public void onBindViewHolder(MultipleViewHolder viewHolder, int position, String item) {
-
-        }
-
-        @Override
-        public boolean isKeep() {
-            return true;
-        }
-    }
 
     private void generateData(int position) {
         ContactProvider contactProvider = new ContactProvider();
-        if (position == 0) {
-            contactProvider.registerHeaderProvider("position" + position, headerFooterProviderNoKeep);
-        } else {
-            contactProvider.registerHeaderProvider("position" + position, headerFooterProvider);
-        }
+
+        contactProvider.registerHeaderProvider("position" + position, headerFooterProvider);
+
         for (int i = 0; i < position + 2; i++)
             contactProvider.add("Contact Position:" + position + " Contact:" + i);
         multipleAdapter.registerProvider(contactProvider);

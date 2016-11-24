@@ -9,6 +9,7 @@ import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 
@@ -153,6 +154,7 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
         }
 
         mFrameLayout = new FrameLayout(mContext);
+        mFrameLayout.setTag("Keep it");
         ViewGroup viewGroup = (ViewGroup) recyclerView.getParent();
         viewGroup.addView(mFrameLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -168,6 +170,7 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
                 handleScrolled(recyclerView);
             }
         });
+
     }
 
     private void handleScrolled(RecyclerView recyclerView) {
@@ -176,20 +179,17 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
         AbsHeaderFooterProvider absHeaderFooterProvider = (AbsHeaderFooterProvider) mViewTypeForProviderMap.get(headerViewType);
 
         if (absHeaderFooterProvider != null && absHeaderFooterProvider.isKeep()) {
-            if (mStickyHeaderProvider == null || !mStickyHeaderProvider.equals(absHeaderFooterProvider)) {
-                mFrameLayout.removeAllViews();
-                MultipleViewHolder holder = absHeaderFooterProvider.onCreateViewHolder(recyclerView, absHeaderFooterProvider.onInflateLayout());
-                mStickyHeaderHolder = holder;
-                mFrameLayout.addView(mStickyHeaderHolder.itemView);
-                mStickyHeaderProvider = absHeaderFooterProvider;
-            }
-
+            mFrameLayout.removeAllViews();
+            MultipleViewHolder holder = absHeaderFooterProvider.onCreateViewHolder(recyclerView, absHeaderFooterProvider.onInflateLayout());
+            mStickyHeaderHolder = holder;
+            mFrameLayout.addView(mStickyHeaderHolder.itemView);
+            mStickyHeaderProvider = absHeaderFooterProvider;
             int section = mPositionSection.get(position);
 
             absHeaderFooterProvider.onBindViewHolder(mStickyHeaderHolder, section, absHeaderFooterProvider.getHeaderData(section));
 
             mFrameLayout.setVisibility(View.VISIBLE);
-
+            mFrameLayout.bringToFront();
         } else {
             mFrameLayout.setVisibility(View.GONE);
         }

@@ -19,7 +19,7 @@ public class MainProvider extends ItemProvider<Model> implements ItemProviderAct
 
     @Override
     public int onInflateLayout() {
-        return R.layout.item_2;
+        return R.layout.item_main;
     }
 
     @Override
@@ -27,6 +27,10 @@ public class MainProvider extends ItemProvider<Model> implements ItemProviderAct
         viewHolder.setText(R.id.textView, item.name);
     }
 
+    @Override
+    public int onInflateActionLayout() {
+        return R.layout.item_action_view;
+    }
 
     @Override
     public boolean isItemCanSwipe(int position) {

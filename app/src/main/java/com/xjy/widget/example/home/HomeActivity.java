@@ -1,6 +1,7 @@
 package com.xjy.widget.example.home;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,8 @@ import com.xjy.widget.adapter.AbsItemProvider;
 import com.xjy.widget.adapter.MultipleAdapter;
 import com.xjy.widget.adapter.MultipleViewHolder;
 import com.xjy.widget.adapter.OnProviderItemClickListener;
+import com.xjy.widget.bounce.CanRefreshLayout;
+import com.xjy.widget.bounce.JYRefreshLayout;
 import com.xjy.widget.example.Model;
 import com.xjy.widget.example.R;
 import com.xjy.widget.example.home.provider.BannerProvider;
@@ -137,6 +140,32 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, View view, int position) {
                 Toast.makeText(HomeActivity.this, "singleItem" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        final JYRefreshLayout refreshLayout = (JYRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout.autoRefresh();
+        refreshLayout.setOnRefreshListener(new CanRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.refreshComplete();
+                    }
+                }, 2000);
+            }
+        });
+
+        refreshLayout.setOnLoadMoreListener(new CanRefreshLayout.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.loadMoreComplete();
+                    }
+                }, 2000);
             }
         });
 

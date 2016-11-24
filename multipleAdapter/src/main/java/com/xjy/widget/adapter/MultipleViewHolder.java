@@ -1,5 +1,6 @@
 package com.xjy.widget.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
@@ -20,10 +21,22 @@ public class MultipleViewHolder extends RecyclerView.ViewHolder implements View.
 
     private boolean isKeep = false;
 
+    public MultipleViewHolder(Context context, int contentLayout, int actionLayout){
+        this(SlidingLayout.build(context, contentLayout, actionLayout));
+    }
+
     public MultipleViewHolder(View itemView) {
         super(itemView);
-        this.itemView.setOnClickListener(this);
-        this.itemView.setOnLongClickListener(this);
+        if (itemView instanceof SlidingLayout){
+            SlidingLayout layout = (SlidingLayout) itemView;
+            layout.getContentView().setOnClickListener(this);
+            layout.getContentView().setOnLongClickListener(this);
+//            this.itemView.setOnClickListener(this);
+//            this.itemView.setOnLongClickListener(this);
+        }else {
+            this.itemView.setOnClickListener(this);
+            this.itemView.setOnLongClickListener(this);
+        }
         mViews = new SparseArray<View>();
     }
 

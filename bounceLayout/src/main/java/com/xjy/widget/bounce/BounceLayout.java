@@ -1,8 +1,10 @@
 package com.xjy.widget.bounce;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,13 +17,13 @@ import android.widget.TextView;
  */
 public class BounceLayout extends CanRefreshLayout {
 
-    private static int headerBackgroundColor = 0xffd4d4d4;
+    private static int headerBackgroundColor = 0x00000000;
 
-    private static int footerBackgroundColor = 0xffd4d4d4;
+    private static int footerBackgroundColor = 0x00000000;
 
-    private static String headerText = "Use BounceLayout Header";
+    private static String headerText = "BOUNCELAYOUT HEADER";
 
-    private static String footerText = "Use BounceLayout Footer";
+    private static String footerText = "BOUNCELAYOUT FOOTER";
 
     public BounceLayout(Context context) {
         this(context, null);
@@ -50,6 +52,14 @@ public class BounceLayout extends CanRefreshLayout {
         setFooterView(footer);
     }
 
+    public void disableBounceTop(){
+        setRefreshEnabled(false);
+    }
+
+    public void disableBounceBottom(){
+        setLoadMoreEnabled(false);
+    }
+
     public static void setHeaderBackgroundColor(int headerBackgroundColor) {
         BounceLayout.headerBackgroundColor = headerBackgroundColor;
     }
@@ -65,6 +75,8 @@ public class BounceLayout extends CanRefreshLayout {
     public static void setFooterText(String footerText) {
         BounceLayout.footerText = footerText;
     }
+
+
 
     private class HeaderOrFooter extends RelativeLayout implements CanRefresh {
 

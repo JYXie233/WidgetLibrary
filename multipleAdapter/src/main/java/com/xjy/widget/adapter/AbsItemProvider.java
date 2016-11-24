@@ -37,6 +37,7 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
 
     private boolean expand = true;
 
+
     public AbsItemProvider() {
         mDataList = new ArrayList<>();
     }
