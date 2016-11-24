@@ -125,9 +125,9 @@ public class HomeItemProvider extends ItemProvider<Model> implements ItemProvide
 
 *核心代码来自[CanRefresh](https://github.com/canyinghao/CanRefresh)*
 
-- *BounceLayout* 上下拉反弹效果
+- *```BounceLayout```* 上下拉反弹效果
 
-- *JYRefreshLayout* 上下拉刷新效果
+- *```JYRefreshLayout```* 上下拉刷新效果
 
 #### import
 
