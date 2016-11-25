@@ -3,18 +3,9 @@
 - ```MultipleAdapter``` RecyclerView Adapter的封装
 - ```BounceLayout``` 上下拉刷新加载更多，Bounce效果，自定义头部尾部。在[CanRefresh](https://github.com/canyinghao/CanRefresh)基础上修改，感谢canyinghao.
 
-*在build.gradle中添加*
+- 效果图
 
-````
-allprojects {
-    repositories {
-        jcenter()
-        maven {
-            url 'https://dl.bintray.com/tmwin/maven'
-        }
-    }
-}
-````
+![alt text](https://github.com/JYXie233/WidgetLibrary/raw/master/demo.gif "title")
 
 ## MultipleAdapter
 这是一个Recyclerview Adapter的封装，使用于Adapter中有多种不同Item。
@@ -168,7 +159,7 @@ public class MainProvider extends ItemProvider<Model> implements ItemProviderAct
 
 - ```openActionLayout()``` 打开ActionLayout
 
-- ```closeActionLayout()```关闭ActionLayout
+- ```closeActionLayout()``` 关闭ActionLayout
 
 
 ##### ```MultipleAdapter```
