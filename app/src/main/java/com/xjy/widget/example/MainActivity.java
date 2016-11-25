@@ -12,6 +12,7 @@ import com.xjy.widget.adapter.AbsItemProvider;
 import com.xjy.widget.adapter.MultipleAdapter;
 import com.xjy.widget.adapter.MultipleViewHolder;
 import com.xjy.widget.adapter.OnProviderItemClickListener;
+import com.xjy.widget.adapter.OnProviderLongClickListener;
 import com.xjy.widget.bounce.BounceLayout;
 import com.xjy.widget.example.contact.ContactActivity;
 import com.xjy.widget.example.home.HomeActivity;
@@ -45,15 +46,30 @@ public class MainActivity extends AppCompatActivity implements OnProviderItemCli
 
         mMainProvider.setOnClickViewListener(R.id.action, new OnProviderItemClickListener<AbsItemProvider<Model, MultipleViewHolder>>() {
             @Override
-            public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, View view, int position) {
-                Toast.makeText(MainActivity.this, "Action", Toast.LENGTH_SHORT).show();
+            public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, MultipleViewHolder holder, View view, int position) {
+                Toast.makeText(MainActivity.this, "Action Click And Close", Toast.LENGTH_SHORT).show();
+                holder.closeActionLayout();
             }
         });
 
+        mMainProvider.setOnClickViewListener(R.id.action2, new OnProviderItemClickListener<AbsItemProvider<Model, MultipleViewHolder>>() {
+            @Override
+            public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, MultipleViewHolder holder, View view, int position) {
+                Toast.makeText(MainActivity.this, "Action Just Click", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mMainProvider.setOnProviderLongClickListener(new OnProviderLongClickListener<AbsItemProvider<Model, MultipleViewHolder>>() {
+            @Override
+            public boolean onProviderLongClick(AbsItemProvider<Model, MultipleViewHolder> provider, View view, int position) {
+                Toast.makeText(MainActivity.this, "Long Click" + position, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
     }
 
     @Override
-    public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, View view, int position) {
+    public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, MultipleViewHolder holder, View view, int position) {
         Class clazz = mMainProvider.get(position).clazz;
         Intent intent = new Intent(this, clazz);
         startActivity(intent);

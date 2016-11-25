@@ -55,6 +55,8 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
 
     private MultipleViewHolder mStickyHeaderHolder;
 
+
+
     public MultipleAdapter(Context context) {
         this.mContext = context;
         mPositionHeaderViewTypes = new SparseIntArray();
@@ -86,6 +88,7 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
                 viewHolder.itemView.setTag(sKeepKey, sKeepYes);
             }
         }
+
         return viewHolder;
     }
 
@@ -93,6 +96,7 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
     public void onBindViewHolder(MultipleViewHolder holder, int position) {
         int type = mPositionViewTypes.get(position);
         AbsBaseProvider itemCreator = mViewTypeForProviderMap.get(type);
+        itemCreator.attachAdapter(this);
         int startNum = itemCreator.getStartNum();
         if (mHeaderPositions.contains(position)) {
             AbsHeaderFooterProvider headerFooterProvider = (AbsHeaderFooterProvider) itemCreator;
@@ -105,6 +109,9 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
         } else {
             AbsItemProvider provider = (AbsItemProvider) itemCreator;
             provider.onBindViewHolder(holder, position - startNum, provider.get(position - startNum));
+            if (provider.getOpenActionLayoutPosition() == position){
+                holder.closeActionLayout();
+            }
         }
 
     }
@@ -413,5 +420,7 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
             notifyItemRangeRemoved(itemProvider.getStartNum(), num);
         }
     }
+
+
 
 }

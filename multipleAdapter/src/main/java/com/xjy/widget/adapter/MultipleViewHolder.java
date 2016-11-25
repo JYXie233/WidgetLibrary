@@ -12,12 +12,16 @@ import android.widget.TextView;
  * Time: 15:10
  * FIXME
  */
-public class MultipleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+public class MultipleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, SlidingLayoutListener{
 
     private SparseArray<View> mViews;
 
     private OnHolderClickListener mOnHolderClickListener;
     private OnHolderLongClickListener mOnHolderLongClickListener;
+
+    private SlidingLayout mSlidingLayout;
+
+    private OnHolderActionListener mOnHolderActionListener;
 
     private boolean isKeep = false;
 
@@ -30,9 +34,10 @@ public class MultipleViewHolder extends RecyclerView.ViewHolder implements View.
         if (itemView instanceof SlidingLayout){
             SlidingLayout layout = (SlidingLayout) itemView;
             layout.getContentView().setOnClickListener(this);
+            layout.setContentViewOnClickListener(this);
             layout.getContentView().setOnLongClickListener(this);
-//            this.itemView.setOnClickListener(this);
-//            this.itemView.setOnLongClickListener(this);
+            layout.setSlidingLayoutListener(this);
+            mSlidingLayout = layout;
         }else {
             this.itemView.setOnClickListener(this);
             this.itemView.setOnLongClickListener(this);
@@ -114,6 +119,20 @@ public class MultipleViewHolder extends RecyclerView.ViewHolder implements View.
         mOnHolderLongClickListener = onHolderLongClickListener;
     }
 
+    @Override
+    public void onActionLayoutOpen() {
+        if (mOnHolderActionListener != null){
+            mOnHolderActionListener.onHolderActionOpen(this.getAdapterPosition());
+        }
+    }
+
+    @Override
+    public void onActionLayoutClose() {
+        if (mOnHolderActionListener != null){
+            mOnHolderActionListener.onHolderActionClose(this.getAdapterPosition());
+        }
+    }
+
     public interface OnHolderClickListener{
         void onHolderClick(MultipleViewHolder holder, View childView);
     }
@@ -122,11 +141,43 @@ public class MultipleViewHolder extends RecyclerView.ViewHolder implements View.
         boolean onHolderLongClick(MultipleViewHolder holder, View childView);
     }
 
+    public interface OnHolderActionListener{
+        void onHolderActionOpen(int position);
+        void onHolderActionClose(int position);
+    }
+
     public boolean isKeep() {
         return isKeep;
     }
 
     public void setKeep(boolean keep) {
         isKeep = keep;
+    }
+
+    public boolean isActionLayoutOpen(){
+        if (mSlidingLayout != null){
+            return mSlidingLayout.isOpen();
+        }
+        return false;
+    }
+
+    public void openActionLayout(){
+        if (mSlidingLayout != null){
+            mSlidingLayout.openActionLayout();
+        }
+    }
+
+    public void closeActionLayout(){
+        if (mSlidingLayout != null){
+            mSlidingLayout.closeActionLayout();
+        }
+    }
+
+    public OnHolderActionListener getOnHolderActionListener() {
+        return mOnHolderActionListener;
+    }
+
+    public void setOnHolderActionListener(OnHolderActionListener onHolderActionListener) {
+        mOnHolderActionListener = onHolderActionListener;
     }
 }

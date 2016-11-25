@@ -41,7 +41,7 @@ public abstract class AbsHeaderFooterProvider<M> extends AbsBaseProvider<M, Mult
             @Override
             public void onHolderClick(MultipleViewHolder holder, View childView) {
                 if (getOnProviderClickListener() != null)
-                    getOnProviderClickListener().onProviderClick(AbsHeaderFooterProvider.this, childView, getSection(holder.getAdapterPosition()));
+                    getOnProviderClickListener().onProviderClick(AbsHeaderFooterProvider.this, holder,childView, getSection(holder.getAdapterPosition()));
             }
         });
 
@@ -69,9 +69,9 @@ public abstract class AbsHeaderFooterProvider<M> extends AbsBaseProvider<M, Mult
     }
 
     @Override
-    public void onProviderClick(AbsHeaderFooterProvider<M> itemProvider, View view, int position) {
+    public void onProviderClick(AbsHeaderFooterProvider<M> itemProvider, MultipleViewHolder holder, View view, int position) {
         if (getOnMultipleItemClickListenerMap() != null) {
-            getOnMultipleItemClickListenerMap().get(view.getId()).onProviderClick(AbsHeaderFooterProvider.this, view, getSection(position));
+            getOnMultipleItemClickListenerMap().get(view.getId()).onProviderClick(AbsHeaderFooterProvider.this, holder, view, getSection(position));
         }
     }
 
@@ -86,7 +86,7 @@ public abstract class AbsHeaderFooterProvider<M> extends AbsBaseProvider<M, Mult
     @Override
     public void onHolderClick(MultipleViewHolder holder, View childView) {
         if (mOnMultipleItemClickListenerMap != null){
-            mOnMultipleItemClickListenerMap.get(childView.getId()).onProviderClick(this, childView, holder.getAdapterPosition() - getStartNum());
+            mOnMultipleItemClickListenerMap.get(childView.getId()).onProviderClick(this, holder, childView, holder.getAdapterPosition() - getStartNum());
         }
     }
 

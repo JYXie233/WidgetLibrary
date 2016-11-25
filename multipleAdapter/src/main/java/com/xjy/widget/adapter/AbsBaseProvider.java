@@ -1,6 +1,7 @@
 package com.xjy.widget.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -19,6 +20,8 @@ public abstract class AbsBaseProvider<M,VH extends MultipleViewHolder>{
 
     private boolean isKeep = false;
 
+    private RecyclerView.Adapter mAdapter;
+
     public AbsBaseProvider() {
 
     }
@@ -33,6 +36,10 @@ public abstract class AbsBaseProvider<M,VH extends MultipleViewHolder>{
             multipleViewHolder.setKeep(isKeep());
             return multipleViewHolder;
         }
+    }
+
+    public void attachAdapter(RecyclerView.Adapter adapter){
+        mAdapter = adapter;
     }
 
     public abstract int onInflateLayout();
@@ -73,5 +80,11 @@ public abstract class AbsBaseProvider<M,VH extends MultipleViewHolder>{
 
     public int onInflateActionLayout(){
         return 0;
+    }
+
+    public void notifyItemChanged(int position){
+        if (mAdapter != null){
+            mAdapter.notifyItemChanged(position);
+        }
     }
 }

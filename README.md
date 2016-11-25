@@ -25,13 +25,14 @@ allprojects {
 - 头部固定
 - 后续将添加更多功能
 
-#### import
+### 添加依赖
 
 ````
-compile 'com.xjy.widget:adapter:0.1.0'
+compile 'com.xjy.widget:adapter:0.1.3'
 ````
 
-#### 自定义Provider，每个Provider可视为一个Item
+### 使用方式
+#### 1.自定义Provider，每个Provider可视为一个Item
 ````
 public class HomeItemProvider extends ItemProvider<Model> implements ItemProviderActionHelper{
     @Override
@@ -72,7 +73,7 @@ public class HomeItemProvider extends ItemProvider<Model> implements ItemProvide
 }
 ````
 
-#### 自定义HeaderFooter
+#### 2.自定义HeaderFooter
 
 ````
     public class MyHeader extends AbsHeaderFooterProvider<String>{
@@ -95,7 +96,7 @@ public class HomeItemProvider extends ItemProvider<Model> implements ItemProvide
     }
 ````
 
-#### 使用
+#### 3.在Activity中
 
 ````
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -115,11 +116,83 @@ public class HomeItemProvider extends ItemProvider<Model> implements ItemProvide
 
 ````
 
+#### 4.使用ActionLayout 滑动出现自定义布局
+
+````Java
+public class MainProvider extends ItemProvider<Model> implements ItemProviderActionHelper {
+
+    public MainProvider() {
+        setSpanSize(2);
+    }
+
+    @Override
+    public int onInflateLayout() {
+        return R.layout.item_main;
+    }
+
+    @Override
+    public void onBindViewHolder(MultipleViewHolder viewHolder, int position, Model item) {
+        viewHolder.setText(R.id.textView, item.name);
+    }
+    //重写onInflateActionLayout返回自定义滑动布局
+    @Override
+    public int onInflateActionLayout() {
+        return R.layout.item_action_view;
+    }
+
+    @Override
+    public boolean isItemCanSwipe(int position) {
+        return false;
+    }
+
+    @Override
+    public boolean isItemCanMove(int position) {
+        return true;
+    }
+
+    @Override
+    public boolean onItemSwipe(int position) {
+        return false;
+    }
+
+    @Override
+    public boolean onItemMove(int oldPosition, int newPosition) {
+        return false;
+    }
+}
+````
+
+##### ```MultipleViewHolder```常用方法
+
+- ```isActionLayoutOpen()``` ActionLayout是否打开
+
+- ```openActionLayout()``` 打开ActionLayout
+
+- ```closeActionLayout()```关闭ActionLayout
+
+
+##### ```MultipleAdapter```
+
+- ```toggleExpand()``` 打开或关闭 某个Provider
+- ```getProviderByPosition()``` 根据position获取当前Provider
+- ```setUseDefaultSetting()``` 是否使用默认设置(不需要RecyclerView.setLayoutManager())
+
+##### ```AbsItemProvider```
+- ```add()``` ```clear()``` ```addAll()``` ```remove()``` 等等List的操作
+- ```reallySize()```返回List的size()，当前Provider为关闭时(expand为false)size()返回0，reallySize()不受影响。
+- ```registerHeaderProvider()``` 注册头部
+- ```registerFooterProvider()``` 注册尾部
+- ```setExpand()``` 展开或收起Provider
+- ```setOnClickViewListener(int id)```监听item中子View的点击事件
+- ```setOnLongClickViewListener(int id)```监听item中子View的长按事件
+- ```setOnProviderClickListener()``` 监听item的点击事件
+- ```setOnProviderLongClickListener()``` 监听item的长按事件
+
 #### 各种事件监听
-- setOnProviderLongClickListener 长按事件
-- setOnProviderClickListener 点击事件
-- setOnClickViewListener 监听item中某个View的点击事件
-- setOnLongClickViewListener 监听item中某个View的长按事件
+- ```setOnProviderLongClickListener``` 长按事件
+- ```setOnProviderClickListener``` 点击事件
+- ```setOnClickViewListener``` 监听item中某个View的点击事件
+- ```setOnLongClickViewListener``` 监听item中某个View的长按事件
 
 ## BounceLayout
 
@@ -129,25 +202,69 @@ public class HomeItemProvider extends ItemProvider<Model> implements ItemProvide
 
 - *```JYRefreshLayout```* 上下拉刷新效果
 
-#### import
+#### 添加依赖
 
 ````
-compile 'com.xjy.widget:bounceLayout:0.0.1'
+compile 'com.xjy.widget:bounceLayout:0.0.2'
 ````
 
 #### 使用
 
+##### BounceLayout
 ````
   <com.xjy.widget.bounce.BounceLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.xjy.widget.bounce.BounceLayout>
+````
+##### JYRefreshLayout
+- ```xml```
+````
+   <com.xjy.widget.bounce.JYRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:text="Hello World!" />
+    </com.xjy.widget.bounce.JYRefreshLayout>
+````
+- ```Java```
+````
+JYRefreshLayout refreshLayout = (JYRefreshLayout) findViewById(R.id.refreshLayout);
+refreshLayout.autoRefresh();
+refreshLayout.setOnRefreshListener(new CanRefreshLayout.OnRefreshListener() {
+     @Override
+     public void onRefresh() {
+     	new Handler().postDelayed(new Runnable() {
+        @Override
+        public void run() {
+        	refreshLayout.refreshComplete();
+        }
+        }, 2000);
+        }
+});
 
-    </com.xjy.widget.bounce.BounceLayout>
+refreshLayout.setOnLoadMoreListener(new CanRefreshLayout.OnLoadMoreListener() {
+	@Override
+	public void onLoadMore() {
+    	new Handler().postDelayed(new Runnable() {
+		@Override
+		public void run() {
+			refreshLayout.loadMoreComplete();
+		}
+		}, 2000);
+		}
+});
 ````
 
 
+
+#### 更多用法请看example

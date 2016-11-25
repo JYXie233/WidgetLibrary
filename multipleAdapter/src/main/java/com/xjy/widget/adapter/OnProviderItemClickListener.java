@@ -9,5 +9,5 @@ import android.view.View;
  * FIXME
  */
 public interface OnProviderItemClickListener<T> {
-    void onProviderClick(T provider, View view, int position);
+    void onProviderClick(T provider, MultipleViewHolder viewHolder, View view, int position);
 }  

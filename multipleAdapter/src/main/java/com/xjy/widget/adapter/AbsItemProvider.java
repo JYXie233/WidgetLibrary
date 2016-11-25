@@ -37,6 +37,7 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
 
     private boolean expand = true;
 
+    private int mOpenActionLayoutPosition = -1;
 
     public AbsItemProvider() {
         mDataList = new ArrayList<>();
@@ -48,8 +49,12 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
         multipleViewHolder.setOnHolderClickListener(new MultipleViewHolder.OnHolderClickListener() {
             @Override
             public void onHolderClick(MultipleViewHolder holder, View childView) {
-                if (mOnProviderClickListener != null)
-                    mOnProviderClickListener.onProviderClick(AbsItemProvider.this, childView, holder.getAdapterPosition() - getStartNum());
+                if (mOpenActionLayoutPosition != -1){
+                    notifyItemChanged(mOpenActionLayoutPosition);
+                }else {
+                    if (mOnProviderClickListener != null)
+                        mOnProviderClickListener.onProviderClick(AbsItemProvider.this, holder, childView, holder.getAdapterPosition() - getStartNum());
+                }
             }
         });
         multipleViewHolder.setOnHolderLongClickListener(new MultipleViewHolder.OnHolderLongClickListener() {
@@ -73,14 +78,14 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
             }
         }
 
-
+        multipleViewHolder.setOnHolderActionListener(mOnHolderActionListener);
         return multipleViewHolder;
     }
 
     @Override
     public void onHolderClick(MultipleViewHolder holder, View childView) {
         if (mOnMultipleItemClickListenerMap != null){
-            mOnMultipleItemClickListenerMap.get(childView.getId()).onProviderClick(this, childView, holder.getAdapterPosition() - getStartNum());
+            mOnMultipleItemClickListenerMap.get(childView.getId()).onProviderClick(this, holder, childView, holder.getAdapterPosition() - getStartNum());
         }
     }
 
@@ -93,9 +98,9 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
     }
 
     @Override
-    public void onProviderClick(AbsItemProvider itemProvider, View view, int position) {
+    public void onProviderClick(AbsItemProvider itemProvider, MultipleViewHolder viewHolder, View view, int position) {
         if (mOnMultipleItemClickListenerMap != null) {
-            mOnMultipleItemClickListenerMap.get(view.getId()).onProviderClick(AbsItemProvider.this, view, position - getStartNum());
+            mOnMultipleItemClickListenerMap.get(view.getId()).onProviderClick(AbsItemProvider.this, viewHolder, view, position - getStartNum());
         }
     }
 
@@ -235,4 +240,23 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
         this.expand = expand;
     }
 
+    private MultipleViewHolder.OnHolderActionListener mOnHolderActionListener = new MultipleViewHolder.OnHolderActionListener() {
+        @Override
+        public void onHolderActionOpen(int position) {
+            mOpenActionLayoutPosition = position;
+        }
+
+        @Override
+        public void onHolderActionClose(int position) {
+            mOpenActionLayoutPosition = -1;
+        }
+    };
+
+    public int getOpenActionLayoutPosition() {
+        return mOpenActionLayoutPosition;
+    }
+
+    public void setOpenActionLayoutPosition(int openActionLayoutPosition) {
+        mOpenActionLayoutPosition = openActionLayoutPosition;
+    }
 }
