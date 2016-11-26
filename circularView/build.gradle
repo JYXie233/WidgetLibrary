@@ -31,7 +31,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
     testCompile 'junit:junit:4.12'
 }
 
@@ -45,7 +44,7 @@ install {
             project {
                 packaging 'aar'
                 // Add your description here
-                name 'Android Adapter'     //项目的描述 你可以多写一点
+                name 'Android CircularView 广告条'     //项目的描述 你可以多写一点
                 url siteUrl
                 // Set your license
                 licenses {
@@ -94,7 +93,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "JYMultipleAdapter"    //发布到JCenter上的项目名字
+        name = "CircularView"    //发布到JCenter上的项目名字
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]

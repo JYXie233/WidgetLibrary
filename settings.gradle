@@ -1,1 +1,1 @@
-include ':app', ':multipleAdapter', ':bounceLayout'
+include ':app', ':multipleAdapter', ':bounceLayout', ':circularView'

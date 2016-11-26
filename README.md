@@ -1,5 +1,8 @@
 # WidgetLibrary
 自己觉得常用的一些控件简单封装一下。
+
+### 当前版本 ```0.2.0```
+
 - ```MultipleAdapter``` RecyclerView Adapter的封装
 - ```BounceLayout``` 上下拉刷新加载更多，Bounce效果，自定义头部尾部。在[CanRefresh](https://github.com/canyinghao/CanRefresh)基础上修改，感谢canyinghao.
 
@@ -19,7 +22,7 @@
 ### 添加依赖
 
 ````
-compile 'com.xjy.widget:adapter:0.1.3'
+compile 'com.xjy.widget:adapter:0.2.0'
 ````
 
 ### 使用方式
@@ -196,7 +199,7 @@ public class MainProvider extends ItemProvider<Model> implements ItemProviderAct
 #### 添加依赖
 
 ````
-compile 'com.xjy.widget:bounceLayout:0.0.2'
+compile 'com.xjy.widget:bounceLayout:0.2.0'
 ````
 
 #### 使用
@@ -256,6 +259,50 @@ refreshLayout.setOnLoadMoreListener(new CanRefreshLayout.OnLoadMoreListener() {
 });
 ````
 
+## CircularView 滚动图片、广告、Banner
 
+#### 添加依赖
+
+````
+compile 'com.xjy.widget:circularView:0.2.0'
+````
+
+#### 用法
+
+- 自己实现图片加载方式
+
+- ```
+  CircularView.installImageLoader(new ICircularImageLoader() {
+      @Override
+      public void onImageLoad(ImageView imageView, String url, String title, int position) {
+          //自己实现
+      }
+  });
+  ```
+
+
+
+```xml```
+
+````
+ <com.xjy.widget.circularView.CircularView
+        android:id="@+id/circularView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+````
+
+```Java```
+
+````
+circularView.setUrls(url);
+circularView.setTitles(url);
+circularView.notifyDataSetChanged();
+circularView.setOnCircularViewClickListener(new OnCircularViewClickListener() {
+            @Override
+            public void onCircularViewClicked(View view, int position) {
+                Toast.makeText(MainActivity.this, "onCircularViewClicked Click" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+````
 
 #### 更多用法请看example

@@ -13,6 +13,8 @@ buildscript {
     }
 }
 
+apply from:"config.gradle"
+
 allprojects {
     repositories {
         jcenter()

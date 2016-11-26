@@ -45,7 +45,7 @@ public class MultipleViewHolder extends RecyclerView.ViewHolder implements View.
         mViews = new SparseArray<View>();
     }
 
-    private <T extends View> T findViewById(int viewId) {
+    public  <T extends View> T findViewById(int viewId) {
         View view = mViews.get(viewId);
         if (view == null) {
             view = itemView.findViewById(viewId);
