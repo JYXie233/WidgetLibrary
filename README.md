@@ -271,18 +271,16 @@ compile 'com.xjy.widget:circularView:0.2.0'
 
 - 自己实现图片加载方式
 
-- ```
+````
   CircularView.installImageLoader(new ICircularImageLoader() {
       @Override
       public void onImageLoad(ImageView imageView, String url, String title, int position) {
           //自己实现
       }
   });
-  ```
+````
 
-
-
-```xml```
+- ```xml```
 
 ````
  <com.xjy.widget.circularView.CircularView
@@ -291,7 +289,7 @@ compile 'com.xjy.widget:circularView:0.2.0'
         android:layout_height="wrap_content" />
 ````
 
-```Java```
+- ```Java```
 
 ````
 
