@@ -294,6 +294,7 @@ compile 'com.xjy.widget:circularView:0.2.0'
 ```Java```
 
 ````
+
 circularView.setUrls(url);
 circularView.setTitles(url);
 circularView.notifyDataSetChanged();
