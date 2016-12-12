@@ -38,4 +38,6 @@ public interface CanRefresh {
      * @param isHeader
      */
     public void setIsHeaderOrFooter(boolean isHeader);
+
+    void onNoMoreData();
 }

@@ -121,5 +121,10 @@ public class BounceLayout extends CanRefreshLayout {
         public void setIsHeaderOrFooter(boolean isHeader) {
             mIsHeader = isHeader;
         }
+
+        @Override
+        public void onNoMoreData() {
+
+        }
     }
 }

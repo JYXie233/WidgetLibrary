@@ -40,16 +40,20 @@ public abstract class AbsHeaderFooterProvider<M> extends AbsBaseProvider<M, Mult
         holder.setOnHolderClickListener(new MultipleViewHolder.OnHolderClickListener() {
             @Override
             public void onHolderClick(MultipleViewHolder holder, View childView) {
-                if (getOnProviderClickListener() != null)
-                    getOnProviderClickListener().onProviderClick(AbsHeaderFooterProvider.this, holder,childView, getSection(holder.getAdapterPosition()));
+                if (getOnProviderClickListener() != null) {
+                    int section = (int) holder.itemView.getTag(R.id.jy_section);
+                    getOnProviderClickListener().onProviderClick(AbsHeaderFooterProvider.this, holder, childView, section);
+                }
             }
         });
 
         holder.setOnHolderLongClickListener(new MultipleViewHolder.OnHolderLongClickListener() {
             @Override
             public boolean onHolderLongClick(MultipleViewHolder holder, View childView) {
-                if (getOnProviderLongClickListener() != null)
-                    return getOnProviderLongClickListener().onProviderLongClick(AbsHeaderFooterProvider.this, childView, getSection(holder.getAdapterPosition()));
+                if (getOnProviderLongClickListener() != null) {
+                    int section = (int) holder.itemView.getTag(R.id.jy_section);
+                    return getOnProviderLongClickListener().onProviderLongClick(AbsHeaderFooterProvider.this, childView, section);
+                }
                 return false;
             }
         });
@@ -69,9 +73,18 @@ public abstract class AbsHeaderFooterProvider<M> extends AbsBaseProvider<M, Mult
     }
 
     @Override
+    public void onBindViewHolder(MultipleViewHolder viewHolder, int position, M item) {
+        viewHolder.itemView.setTag(R.id.jy_section, position);
+        onBindHeaderFooterHolder(viewHolder, position, item);
+    }
+
+    public abstract void onBindHeaderFooterHolder(MultipleViewHolder viewHolder, int section, M item);
+
+    @Override
     public void onProviderClick(AbsHeaderFooterProvider<M> itemProvider, MultipleViewHolder holder, View view, int position) {
         if (getOnMultipleItemClickListenerMap() != null) {
-            getOnMultipleItemClickListenerMap().get(view.getId()).onProviderClick(AbsHeaderFooterProvider.this, holder, view, getSection(position));
+            int section = (int) holder.itemView.getTag(R.id.jy_section);
+            getOnMultipleItemClickListenerMap().get(view.getId()).onProviderClick(AbsHeaderFooterProvider.this, holder, view, section);
         }
     }
 

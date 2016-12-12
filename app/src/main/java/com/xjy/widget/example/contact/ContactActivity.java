@@ -39,8 +39,9 @@ public class ContactActivity extends AppCompatActivity {
                 return R.layout.item_contact;
             }
 
+
             @Override
-            public void onBindViewHolder(MultipleViewHolder viewHolder, int position, String item) {
+            public void onBindHeaderFooterHolder(MultipleViewHolder viewHolder, int position, String item) {
                 viewHolder.setText(R.id.textView, "header:" + position);
             }
         };

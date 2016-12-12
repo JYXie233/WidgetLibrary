@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onBindViewHolder(MultipleViewHolder viewHolder, int position, String item) {
+            public void onBindHeaderFooterHolder(MultipleViewHolder viewHolder, int position, String item) {
                 viewHolder.setText(R.id.textView, item);
             }
         };
@@ -164,10 +164,13 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         refreshLayout.loadMoreComplete();
+                        refreshLayout.setNoMoreData(true);
                     }
                 }, 2000);
             }
         });
+
+
 
     }
 

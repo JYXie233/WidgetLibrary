@@ -21,7 +21,6 @@ public class JYRefreshLayout extends CanRefreshLayout {
 
     public JYRefreshLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
     }
 
     @Override

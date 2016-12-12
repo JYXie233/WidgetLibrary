@@ -103,6 +103,8 @@ public abstract class CanRefreshLayout extends ViewGroup {
 
     private Scroller mScroller = new Scroller(getContext());
 
+    private boolean isNoMoreData = false;
+
 
     public CanRefreshLayout(Context context) {
         this(context, null);
@@ -496,6 +498,9 @@ public abstract class CanRefreshLayout extends ViewGroup {
                             getFooterInterface().onPrepare();
                         }
                         getFooterInterface().onPositionChange(Math.abs(scrollSum) / (float) mFooterHeight);
+                        if (isNoMoreData){
+                            getFooterInterface().onNoMoreData();
+                        }
                     }
                 }
                 return true;
@@ -512,12 +517,15 @@ public abstract class CanRefreshLayout extends ViewGroup {
                             smoothMove(true, false, 0, 0);
                         }
                     } else {
-                        if (Math.abs(scrollSum) > mFooterHeight) {
+                        if (Math.abs(scrollSum) > mFooterHeight && !isNoMoreData) {
                             smoothMove(false, false, mContentView.getMeasuredHeight() - getMeasuredHeight() + mFooterHeight, mFooterHeight);
                             getFooterInterface().onRelease();
                             loadingMore();
                         } else {
                             smoothMove(false, false, mContentView.getMeasuredHeight() - getMeasuredHeight(), 0);
+                            if (isNoMoreData){
+                                getFooterInterface().onNoMoreData();
+                            }
                         }
                     }
                 }
@@ -759,6 +767,7 @@ public abstract class CanRefreshLayout extends ViewGroup {
         if (mOnRefreshListener != null) {
             isRefreshingOrLoadMoreing = true;
             mOnRefreshListener.onRefresh();
+            setNoMoreData(false);
         }
 
     }
@@ -912,6 +921,14 @@ public abstract class CanRefreshLayout extends ViewGroup {
     public void setContentView(View contentView) {
         mContentView = contentView;
 
+    }
+
+    public boolean isNoMoreData() {
+        return isNoMoreData;
+    }
+
+    public void setNoMoreData(boolean noMoreData) {
+        isNoMoreData = noMoreData;
     }
 
     public abstract void onInflateHeaderFooter();

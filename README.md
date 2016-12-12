@@ -22,7 +22,7 @@
 ### 添加依赖
 
 ````
-compile 'com.xjy.widget:adapter:0.2.0'
+compile 'com.xjy.widget:multipleAdapter:0.2.0'
 ````
 
 ### 使用方式

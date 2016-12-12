@@ -88,4 +88,9 @@ public class JYRefreshHeader extends FrameLayout implements CanRefresh{
     public void setIsHeaderOrFooter(boolean isHeader) {
         mIsHeader = isHeader;
     }
+
+    @Override
+    public void onNoMoreData() {
+        mStatusTextView.setText("没有更多数据了");
+    }
 }
