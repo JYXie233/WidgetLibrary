@@ -37,9 +37,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements OnProviderItemClickListener<AbsItemProvider<Model, MultipleViewHolder>> {
+public class MainActivity extends AppCompatActivity implements OnProviderItemClickListener {
 
-    private MultipleAdapter mMultipleAdapter;
+    private MultipleAdapter<MainViewHolder> mMultipleAdapter;
 
     MainProvider mMainProvider;
 
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements OnProviderItemCli
         setContentView(R.layout.activity_main);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        mMultipleAdapter = new MultipleAdapter(this);
+        mMultipleAdapter = new MultipleAdapter<MainViewHolder>(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -63,24 +63,24 @@ public class MainActivity extends AppCompatActivity implements OnProviderItemCli
         recyclerView.setAdapter(mMultipleAdapter);
         mMainProvider.setOnProviderClickListener(this);
 
-        mMainProvider.setOnClickViewListener(R.id.action, new OnProviderItemClickListener<AbsItemProvider<Model, MultipleViewHolder>>() {
+        mMainProvider.setOnClickViewListener(R.id.action, new OnProviderItemClickListener() {
             @Override
-            public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, MultipleViewHolder holder, View view, int position) {
+            public void onProviderClick(MultipleViewHolder holder, View view, int position) {
                 Toast.makeText(MainActivity.this, "Action Click And Close", Toast.LENGTH_SHORT).show();
                 holder.closeActionLayout();
             }
         });
 
-        mMainProvider.setOnClickViewListener(R.id.action2, new OnProviderItemClickListener<AbsItemProvider<Model, MultipleViewHolder>>() {
+        mMainProvider.setOnClickViewListener(R.id.action2, new OnProviderItemClickListener() {
             @Override
-            public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, MultipleViewHolder holder, View view, int position) {
+            public void onProviderClick(MultipleViewHolder holder, View view, int position) {
                 Toast.makeText(MainActivity.this, "Action Just Click", Toast.LENGTH_SHORT).show();
             }
         });
 
-        mMainProvider.setOnProviderLongClickListener(new OnProviderLongClickListener<AbsItemProvider<Model, MultipleViewHolder>>() {
+        mMainProvider.setOnProviderLongClickListener(new OnProviderLongClickListener() {
             @Override
-            public boolean onProviderLongClick(AbsItemProvider<Model, MultipleViewHolder> provider, View view, int position) {
+            public boolean onProviderLongClick(View view, int position) {
                 Toast.makeText(MainActivity.this, "Long Click" + position, Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements OnProviderItemCli
     }
 
     @Override
-    public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, MultipleViewHolder holder, View view, int position) {
+    public void onProviderClick(MultipleViewHolder holder, View view, int position) {
         Class clazz = mMainProvider.get(position).clazz;
         Intent intent = new Intent(this, clazz);
         startActivity(intent);

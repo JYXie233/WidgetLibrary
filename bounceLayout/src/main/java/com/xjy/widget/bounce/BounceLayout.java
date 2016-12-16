@@ -3,6 +3,7 @@ package com.xjy.widget.bounce;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ public class BounceLayout extends CanRefreshLayout {
     private static int headerBackgroundColor = 0x00000000;
 
     private static int footerBackgroundColor = 0x00000000;
+
+    private static int textColor = 0xFF000000;
 
     private static String headerText = "BOUNCELAYOUT HEADER";
 
@@ -43,13 +46,16 @@ public class BounceLayout extends CanRefreshLayout {
         header.setBackgroundColor(headerBackgroundColor);
         TextView textView = (TextView) header.findViewById(R.id.textView);
         textView.setText(headerText);
+        textView.setTextColor(textColor);
         setHeaderView(header);
 
         HeaderOrFooter footer = new HeaderOrFooter(getContext(), R.layout.jy_header_footer);
         footer.setBackgroundColor(footerBackgroundColor);
         textView = (TextView) footer.findViewById(R.id.textView);
         textView.setText(footerText);
+        textView.setTextColor(textColor);
         setFooterView(footer);
+
     }
 
     public void disableBounceTop(){
@@ -66,6 +72,10 @@ public class BounceLayout extends CanRefreshLayout {
 
     public static void setFooterBackgroundColor(int footerBackgroundColor) {
         BounceLayout.footerBackgroundColor = footerBackgroundColor;
+    }
+
+    public static void setTextColor(int textColor){
+        BounceLayout.textColor = textColor;
     }
 
     public static void setHeaderText(String headerText) {
@@ -86,6 +96,12 @@ public class BounceLayout extends CanRefreshLayout {
             super(context);
             setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             LayoutInflater.from(getContext()).inflate(layoutId, this, true);
+
+        }
+
+        @Override
+        protected void onFinishInflate() {
+            super.onFinishInflate();
         }
 
         @Override

@@ -9,6 +9,6 @@ import android.view.View;
  * Time: 15:28
  * FIXME
  */
-public interface OnProviderLongClickListener<T> {
-    boolean onProviderLongClick(T provider, View view, int position);
+public interface OnProviderLongClickListener {
+    boolean onProviderLongClick(View view, int position);
 }  

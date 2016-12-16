@@ -2,6 +2,7 @@ package com.xjy.widget.example.home.provider;
 
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.xjy.widget.adapter.ItemProvider;
@@ -23,11 +24,9 @@ import java.util.List;
  */
 public class BannerProvider extends ItemProvider<String> {
 
-
-
     @Override
-    public int onInflateLayout() {
-        return R.layout.item_home_banner;
+    public MultipleViewHolder onCreateViewHolder(ViewGroup parent) {
+        return new MultipleViewHolder(parent, R.layout.item_home_banner);
     }
 
     @Override

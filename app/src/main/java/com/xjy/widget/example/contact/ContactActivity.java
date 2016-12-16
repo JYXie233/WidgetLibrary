@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.xjy.widget.adapter.AbsHeaderFooterProvider;
 import com.xjy.widget.adapter.AbsItemProvider;
@@ -35,10 +36,9 @@ public class ContactActivity extends AppCompatActivity {
 
         headerFooterProvider = new AbsHeaderFooterProvider<String>() {
             @Override
-            public int onInflateLayout() {
-                return R.layout.item_contact;
+            public MultipleViewHolder onCreateViewHolder(ViewGroup parent) {
+                return new MultipleViewHolder(parent, R.layout.item_contact);
             }
-
 
             @Override
             public void onBindHeaderFooterHolder(MultipleViewHolder viewHolder, int position, String item) {
@@ -46,9 +46,9 @@ public class ContactActivity extends AppCompatActivity {
             }
         };
 
-        headerFooterProvider.setOnProviderClickListener(new OnProviderItemClickListener<AbsHeaderFooterProvider<String>>() {
+        headerFooterProvider.setOnProviderClickListener(new OnProviderItemClickListener() {
             @Override
-            public void onProviderClick(AbsHeaderFooterProvider<String> provider, MultipleViewHolder viewHolder, View view, int position) {
+            public void onProviderClick(MultipleViewHolder viewHolder, View view, int position) {
                 if (multipleAdapter.getProviderBySection(position).reallySize() == 0) {
                     installData(position);
                 } else {
@@ -83,7 +83,7 @@ public class ContactActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                ContactProvider contactProvider = multipleAdapter.getProviderBySection(position);
+                ContactProvider contactProvider = (ContactProvider) multipleAdapter.getProviderBySection(position);
                 for (int i = 0; i < position + 1; i++)
                     contactProvider.add("Contact Position:" + position + " Contact:" + i);
                 runOnUiThread(new Runnable() {
@@ -110,9 +110,10 @@ public class ContactActivity extends AppCompatActivity {
 
     private class ContactProvider extends AbsItemProvider<String, MultipleViewHolder> implements ItemProviderActionHelper {
 
+
         @Override
-        public int onInflateLayout() {
-            return R.layout.item_simple;
+        public MultipleViewHolder onCreateViewHolder(ViewGroup parent) {
+            return new MultipleViewHolder(parent, R.layout.item_simple);
         }
 
         @Override

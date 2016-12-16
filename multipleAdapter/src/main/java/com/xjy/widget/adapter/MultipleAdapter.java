@@ -24,7 +24,7 @@ import java.util.Map;
  * Time: 11:15
  * FIXME
  */
-public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> implements JYItemTouchHelperAdapter {
+public class MultipleAdapter<VM extends MultipleViewHolder> extends RecyclerView.Adapter<VM> implements JYItemTouchHelperAdapter {
 
     private Map<Integer, AbsBaseProvider> mViewTypeForProviderMap;
 
@@ -79,9 +79,9 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
 
 
     @Override
-    public MultipleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VM onCreateViewHolder(ViewGroup parent, int viewType) {
         AbsBaseProvider itemCreator = mViewTypeForProviderMap.get(viewType);
-        MultipleViewHolder viewHolder = itemCreator.onCreateViewHolder(parent, viewType);
+        VM viewHolder = (VM) itemCreator.onCreateViewHolder(parent, viewType);
         viewHolder.itemView.setTag(sKeepKey, sKeepNo);
         if (itemCreator instanceof AbsHeaderFooterProvider) {
             if ((itemCreator).isKeep()) {
@@ -93,7 +93,7 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
     }
 
     @Override
-    public void onBindViewHolder(MultipleViewHolder holder, int position) {
+    public void onBindViewHolder(VM holder, int position) {
         int type = mPositionViewTypes.get(position);
         AbsBaseProvider itemCreator = mViewTypeForProviderMap.get(type);
         itemCreator.attachAdapter(this);
@@ -152,7 +152,6 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
             recyclerView.setLayoutManager(layoutManager);
         }
         if (useDefaultSetting) {
-            recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
             if (layoutManager instanceof GridLayoutManager) {
                 GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
                 mSpanSize = gridLayoutManager.getSpanCount();
@@ -187,13 +186,13 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
 
         if (absHeaderFooterProvider != null && absHeaderFooterProvider.isKeep()) {
             mFrameLayout.removeAllViews();
-            MultipleViewHolder holder = absHeaderFooterProvider.onCreateViewHolder(recyclerView, absHeaderFooterProvider.onInflateLayout());
+            MultipleViewHolder holder = absHeaderFooterProvider.onCreateViewHolder(recyclerView, headerViewType);
             mStickyHeaderHolder = holder;
             mFrameLayout.addView(mStickyHeaderHolder.itemView);
             mStickyHeaderProvider = absHeaderFooterProvider;
             int section = mPositionSection.get(position);
 
-            absHeaderFooterProvider.onBindViewHolder(mStickyHeaderHolder, section, absHeaderFooterProvider.getHeaderData(section));
+            mStickyHeaderProvider.onBindViewHolder(mStickyHeaderHolder, section, mStickyHeaderProvider.getHeaderData(section));
 
             mFrameLayout.setVisibility(View.VISIBLE);
             mFrameLayout.bringToFront();
@@ -307,7 +306,7 @@ public class MultipleAdapter extends RecyclerView.Adapter<MultipleViewHolder> im
         return count;
     }
 
-    public <M> AbsItemProvider<M, MultipleViewHolder> registerProvider(AbsItemProvider<M, MultipleViewHolder> itemProvider) {
+    public <M, VH extends MultipleViewHolder> AbsItemProvider<M, VH> registerProvider(AbsItemProvider<M, VH> itemProvider) {
         itemProvider.setContext(mContext);
         int type = itemProvider.hashCode();
         mViewTypeForProviderMap.put(type, itemProvider);

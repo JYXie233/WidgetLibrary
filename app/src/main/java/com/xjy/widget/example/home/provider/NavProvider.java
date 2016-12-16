@@ -1,6 +1,8 @@
 package com.xjy.widget.example.home.provider;
 
 
+import android.view.ViewGroup;
+
 import com.xjy.widget.adapter.ItemProvider;
 import com.xjy.widget.adapter.MultipleViewHolder;
 import com.xjy.widget.example.Model;
@@ -13,9 +15,10 @@ import com.xjy.widget.example.R;
  * FIXME
  */
 public class NavProvider extends ItemProvider<Model> {
+
     @Override
-    public int onInflateLayout() {
-        return R.layout.item_home_nav;
+    public MultipleViewHolder onCreateViewHolder(ViewGroup parent) {
+        return new MultipleViewHolder(parent, R.layout.item_home_nav);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.xjy.widget.example;
 
 
+import android.view.ViewGroup;
+
+import com.xjy.widget.adapter.AbsItemProvider;
 import com.xjy.widget.adapter.ItemProvider;
 import com.xjy.widget.adapter.ItemProviderActionHelper;
 import com.xjy.widget.adapter.MultipleViewHolder;
@@ -11,19 +14,19 @@ import com.xjy.widget.adapter.MultipleViewHolder;
  * Time: 15:33
  * FIXME
  */
-public class MainProvider extends ItemProvider<Model> implements ItemProviderActionHelper {
+public class MainProvider extends AbsItemProvider<Model, MainViewHolder> implements ItemProviderActionHelper {
 
     public MainProvider() {
         setSpanSize(2);
     }
 
     @Override
-    public int onInflateLayout() {
-        return R.layout.item_main;
+    public MainViewHolder onCreateViewHolder(ViewGroup parent) {
+        return new MainViewHolder(parent.getContext(), R.layout.item_main, R.layout.item_action_view);
     }
 
     @Override
-    public void onBindViewHolder(MultipleViewHolder viewHolder, int position, Model item) {
+    public void onBindViewHolder(MainViewHolder viewHolder, int position, Model item) {
         viewHolder.setText(R.id.textView, item.name);
     }
 

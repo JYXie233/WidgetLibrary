@@ -11,7 +11,7 @@ import android.view.ViewGroup;
  * Time: 16:27
  * FIXME
  */
-public abstract class AbsBaseProvider<M,VH extends MultipleViewHolder>{
+public abstract class AbsBaseProvider<M, VH extends MultipleViewHolder> {
     private Context mContext;
 
     private int mStartNum = 0;
@@ -27,22 +27,18 @@ public abstract class AbsBaseProvider<M,VH extends MultipleViewHolder>{
     }
 
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (onInflateActionLayout() == 0) {
-            VH multipleViewHolder = (VH) new MultipleViewHolder(LayoutInflater.from(getContext()).inflate(onInflateLayout(), parent, false));
-            multipleViewHolder.setKeep(isKeep());
-            return multipleViewHolder;
-        }else{
-            VH multipleViewHolder = (VH) new MultipleViewHolder(mContext, onInflateLayout(), onInflateActionLayout());
-            multipleViewHolder.setKeep(isKeep());
-            return multipleViewHolder;
-        }
+
+        VH multipleViewHolder = onCreateViewHolder(parent);
+        multipleViewHolder.setKeep(isKeep());
+        return multipleViewHolder;
+
     }
 
-    public void attachAdapter(RecyclerView.Adapter adapter){
+    public void attachAdapter(RecyclerView.Adapter adapter) {
         mAdapter = adapter;
     }
 
-    public abstract int onInflateLayout();
+    public abstract VH onCreateViewHolder(ViewGroup parent);
 
     public abstract void onBindViewHolder(VH viewHolder, int position, M item);
 
@@ -78,12 +74,12 @@ public abstract class AbsBaseProvider<M,VH extends MultipleViewHolder>{
         isKeep = keep;
     }
 
-    public int onInflateActionLayout(){
+    public int onInflateActionLayout() {
         return 0;
     }
 
-    public void notifyItemChanged(int position){
-        if (mAdapter != null){
+    public void notifyItemChanged(int position) {
+        if (mAdapter != null) {
             mAdapter.notifyItemChanged(position);
         }
     }

@@ -3,7 +3,9 @@ package com.xjy.widget.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
@@ -27,6 +29,10 @@ public class MultipleViewHolder extends RecyclerView.ViewHolder implements View.
 
     public MultipleViewHolder(Context context, int contentLayout, int actionLayout){
         this(SlidingLayout.build(context, contentLayout, actionLayout));
+    }
+
+    public MultipleViewHolder(ViewGroup parent, int layoutId){
+        this(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
     }
 
     public MultipleViewHolder(View itemView) {
@@ -68,6 +74,7 @@ public class MultipleViewHolder extends RecyclerView.ViewHolder implements View.
 
     public MultipleViewHolder setClickListener(int viewId, final OnHolderClickListener onHolderClickListener) {
         View view = findViewById(viewId);
+        assert view != null:viewId + ":为空";
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

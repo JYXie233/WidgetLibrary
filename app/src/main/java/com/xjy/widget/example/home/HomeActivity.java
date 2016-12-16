@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.xjy.widget.adapter.AbsHeaderFooterProvider;
@@ -59,8 +60,8 @@ public class HomeActivity extends AppCompatActivity {
 
         AbsHeaderFooterProvider<String> header = new AbsHeaderFooterProvider<String>() {
             @Override
-            public int onInflateLayout() {
-                return R.layout.item_home_header;
+            public MultipleViewHolder onCreateViewHolder(ViewGroup parent) {
+                return new MultipleViewHolder(parent, R.layout.item_home_header);
             }
 
             @Override
@@ -70,9 +71,9 @@ public class HomeActivity extends AppCompatActivity {
         };
 
         header.setKeep(true);
-        header.setOnProviderClickListener(new OnProviderItemClickListener<AbsHeaderFooterProvider<String>>() {
+        header.setOnProviderClickListener(new OnProviderItemClickListener() {
             @Override
-            public void onProviderClick(AbsHeaderFooterProvider<String> provider, MultipleViewHolder holder, View view, int position) {
+            public void onProviderClick(MultipleViewHolder holder, View view, int position) {
                 Toast.makeText(HomeActivity.this, "header section:" + position, Toast.LENGTH_SHORT).show();
                 multipleAdapter.toggleExpand(position);
             }
@@ -107,38 +108,38 @@ public class HomeActivity extends AppCompatActivity {
 
         multipleAdapter.notifyDataSetChanged();
 
-        bannerProvider.setOnProviderClickListener(new OnProviderItemClickListener<AbsItemProvider<String, MultipleViewHolder>>() {
+        bannerProvider.setOnProviderClickListener(new OnProviderItemClickListener() {
             @Override
-            public void onProviderClick(AbsItemProvider<String, MultipleViewHolder> provider, MultipleViewHolder holder, View view, int position) {
-                Toast.makeText(HomeActivity.this, provider.get(position), Toast.LENGTH_SHORT).show();
+            public void onProviderClick(MultipleViewHolder holder, View view, int position) {
+
             }
         });
 
 
-        homeItemProvider.setOnClickViewListener(R.id.textView, new OnProviderItemClickListener<AbsItemProvider<Model, MultipleViewHolder>>() {
+        homeItemProvider.setOnClickViewListener(R.id.textView, new OnProviderItemClickListener() {
             @Override
-            public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, MultipleViewHolder holder, View view, int position) {
-                Toast.makeText(HomeActivity.this, provider.get(position).name, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        navProvider.setOnProviderClickListener(new OnProviderItemClickListener<AbsItemProvider<Model, MultipleViewHolder>>() {
-            @Override
-            public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, MultipleViewHolder holder, View view, int position) {
+            public void onProviderClick(MultipleViewHolder holder, View view, int position) {
 
             }
         });
 
-        homeItemProvider.setOnProviderClickListener(new OnProviderItemClickListener<AbsItemProvider<Model, MultipleViewHolder>>() {
+        navProvider.setOnProviderClickListener(new OnProviderItemClickListener() {
             @Override
-            public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, MultipleViewHolder holder, View view, int position) {
+            public void onProviderClick(MultipleViewHolder holder, View view, int position) {
+
+            }
+        });
+
+        homeItemProvider.setOnProviderClickListener(new OnProviderItemClickListener() {
+            @Override
+            public void onProviderClick(MultipleViewHolder holder, View view, int position) {
                 Toast.makeText(HomeActivity.this, "multipleItem" + position, Toast.LENGTH_SHORT).show();
             }
         });
 
-        singleLineProvider.setOnProviderClickListener(new OnProviderItemClickListener<AbsItemProvider<Model, MultipleViewHolder>>() {
+        singleLineProvider.setOnProviderClickListener(new OnProviderItemClickListener() {
             @Override
-            public void onProviderClick(AbsItemProvider<Model, MultipleViewHolder> provider, MultipleViewHolder holder, View view, int position) {
+            public void onProviderClick(MultipleViewHolder holder, View view, int position) {
                 Toast.makeText(HomeActivity.this, "singleItem" + position, Toast.LENGTH_SHORT).show();
             }
         });
