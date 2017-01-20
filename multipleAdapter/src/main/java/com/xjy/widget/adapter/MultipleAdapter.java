@@ -324,6 +324,11 @@ public class MultipleAdapter<VM extends MultipleViewHolder> extends RecyclerView
         return itemProvider;
     }
 
+    public void clearProvider(){
+        mViewTypeForProviderMap.clear();
+        mProviderOrderArray.clear();
+    }
+
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
         int oldType = mPositionViewTypes.get(fromPosition);
@@ -354,6 +359,7 @@ public class MultipleAdapter<VM extends MultipleViewHolder> extends RecyclerView
             if (!handle) {
                 itemCreator.remove(position - itemCreator.getStartNum());
                 notifyItemRangeRemoved(position, 1);
+                itemCreator.onItemAfterSwipe(position - itemCreator.getStartNum());
             }
         }
     }

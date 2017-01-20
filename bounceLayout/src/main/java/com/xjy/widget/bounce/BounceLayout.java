@@ -44,16 +44,14 @@ public class BounceLayout extends CanRefreshLayout {
     public void onInflateHeaderFooter() {
         HeaderOrFooter header = new HeaderOrFooter(getContext(), R.layout.jy_header_footer);
         header.setBackgroundColor(headerBackgroundColor);
-        TextView textView = (TextView) header.findViewById(R.id.textView);
+        TextPathView textView = (TextPathView) header.findViewById(R.id.xjy_textView);
         textView.setText(headerText);
-        textView.setTextColor(textColor);
         setHeaderView(header);
 
         HeaderOrFooter footer = new HeaderOrFooter(getContext(), R.layout.jy_header_footer);
         footer.setBackgroundColor(footerBackgroundColor);
-        textView = (TextView) footer.findViewById(R.id.textView);
+        textView = (TextPathView) footer.findViewById(R.id.xjy_textView);
         textView.setText(footerText);
-        textView.setTextColor(textColor);
         setFooterView(footer);
 
     }

@@ -48,14 +48,13 @@ public class ContactActivity extends AppCompatActivity {
 
         headerFooterProvider.setOnProviderClickListener(new OnProviderItemClickListener() {
             @Override
-            public void onProviderClick(MultipleViewHolder viewHolder, View view, int position) {
+            public void onProviderClick(Object provider, MultipleViewHolder viewHolder, View view, int position) {
                 if (multipleAdapter.getProviderBySection(position).reallySize() == 0) {
                     installData(position);
                 } else {
                     multipleAdapter.toggleExpand(position);
                 }
             }
-
         });
 
 

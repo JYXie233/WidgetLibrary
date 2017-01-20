@@ -82,5 +82,12 @@ public abstract class AbsBaseProvider<M, VH extends MultipleViewHolder> {
         if (mAdapter != null) {
             mAdapter.notifyItemChanged(position);
         }
+
+    }
+
+    public void notifyDataSetChanged(){
+        if (mAdapter != null){
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

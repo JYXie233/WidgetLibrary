@@ -20,6 +20,7 @@ import com.xjy.widget.adapter.MultipleViewHolder;
 import com.xjy.widget.adapter.OnProviderItemClickListener;
 import com.xjy.widget.adapter.OnProviderLongClickListener;
 import com.xjy.widget.bounce.BounceLayout;
+import com.xjy.widget.bounce.TextPathView;
 import com.xjy.widget.circularView.CircularView;
 import com.xjy.widget.circularView.ICircularImageLoader;
 import com.xjy.widget.circularView.OnCircularViewClickListener;
@@ -63,28 +64,14 @@ public class MainActivity extends AppCompatActivity implements OnProviderItemCli
         recyclerView.setAdapter(mMultipleAdapter);
         mMainProvider.setOnProviderClickListener(this);
 
-        mMainProvider.setOnClickViewListener(R.id.action, new OnProviderItemClickListener() {
+        mMainProvider.setOnClickViewListener(R.id.action, new OnProviderItemClickListener<AbsItemProvider<Model, MainViewHolder>>() {
             @Override
-            public void onProviderClick(MultipleViewHolder holder, View view, int position) {
+            public void onProviderClick(AbsItemProvider<Model, MainViewHolder> provider, MultipleViewHolder viewHolder, View view, int position) {
                 Toast.makeText(MainActivity.this, "Action Click And Close", Toast.LENGTH_SHORT).show();
-                holder.closeActionLayout();
+                viewHolder.closeActionLayout();
             }
         });
 
-        mMainProvider.setOnClickViewListener(R.id.action2, new OnProviderItemClickListener() {
-            @Override
-            public void onProviderClick(MultipleViewHolder holder, View view, int position) {
-                Toast.makeText(MainActivity.this, "Action Just Click", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        mMainProvider.setOnProviderLongClickListener(new OnProviderLongClickListener() {
-            @Override
-            public boolean onProviderLongClick(View view, int position) {
-                Toast.makeText(MainActivity.this, "Long Click" + position, Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
 
         CircularView.installImageLoader(new ICircularImageLoader() {
             @Override
@@ -93,15 +80,18 @@ public class MainActivity extends AppCompatActivity implements OnProviderItemCli
             }
         });
 
+        TextPathView textPathView = (TextPathView) findViewById(R.id.textView);
+        textPathView.setText("EYEVISION");
 
     }
 
     @Override
-    public void onProviderClick(MultipleViewHolder holder, View view, int position) {
+    public void onProviderClick(Object provider, MultipleViewHolder viewHolder, View view, int position) {
         Class clazz = mMainProvider.get(position).clazz;
         Intent intent = new Intent(this, clazz);
         startActivity(intent);
     }
+
 
     private void loadImage(final ImageView imageView, final String urlStr){
         new Thread(new Runnable() {

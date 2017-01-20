@@ -14,19 +14,19 @@ import java.util.Map;
  * Time: 09:46
  * FIXME
  */
-public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends AbsBaseProvider<M, VH> implements OnProviderItemClickListener, OnProviderLongClickListener, MultipleViewHolder.OnHolderLongClickListener, MultipleViewHolder.OnHolderClickListener{
+public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends AbsBaseProvider<M, VH> implements OnProviderItemClickListener<AbsItemProvider<M, VH>>, OnProviderLongClickListener<AbsItemProvider<M, VH>>, MultipleViewHolder.OnHolderLongClickListener, MultipleViewHolder.OnHolderClickListener{
 
     private List<M> mDataList;
 
 
 
-    private OnProviderItemClickListener mOnProviderClickListener;
+    private OnProviderItemClickListener<AbsItemProvider<M, VH>> mOnProviderClickListener;
 
-    private OnProviderLongClickListener mOnProviderLongClickListener;
+    private OnProviderLongClickListener<AbsItemProvider<M, VH>> mOnProviderLongClickListener;
 
-    private Map<Integer, OnProviderItemClickListener> mOnMultipleItemClickListenerMap;
+    private Map<Integer, OnProviderItemClickListener<AbsItemProvider<M, VH>>> mOnMultipleItemClickListenerMap;
 
-    private Map<Integer, OnProviderLongClickListener> mOnMultipleItemLongClickListenerMap;
+    private Map<Integer, OnProviderLongClickListener<AbsItemProvider<M, VH>>> mOnMultipleItemLongClickListenerMap;
 
     private AbsHeaderFooterProvider mHeaderProvider;
     private AbsHeaderFooterProvider mFooterProvider;
@@ -53,7 +53,7 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
                     notifyItemChanged(mOpenActionLayoutPosition);
                 }else {
                     if (mOnProviderClickListener != null)
-                        mOnProviderClickListener.onProviderClick(holder, childView, holder.getAdapterPosition() - getStartNum());
+                        mOnProviderClickListener.onProviderClick(AbsItemProvider.this, holder, childView, holder.getAdapterPosition() - getStartNum());
                 }
             }
         });
@@ -61,7 +61,7 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
             @Override
             public boolean onHolderLongClick(MultipleViewHolder holder, View childView) {
                 if (mOnProviderLongClickListener != null)
-                    return mOnProviderLongClickListener.onProviderLongClick(childView, holder.getAdapterPosition() - getStartNum());
+                    return mOnProviderLongClickListener.onProviderLongClick(AbsItemProvider.this, childView, holder.getAdapterPosition() - getStartNum());
                 return false;
             }
         });
@@ -85,39 +85,40 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
     @Override
     public void onHolderClick(MultipleViewHolder holder, View childView) {
         if (mOnMultipleItemClickListenerMap != null){
-            mOnMultipleItemClickListenerMap.get(childView.getId()).onProviderClick(holder, childView, holder.getAdapterPosition() - getStartNum());
+            mOnMultipleItemClickListenerMap.get(childView.getId()).onProviderClick(this, holder, childView, holder.getAdapterPosition() - getStartNum());
         }
     }
 
     @Override
     public boolean onHolderLongClick(MultipleViewHolder holder, View childView) {
         if (mOnMultipleItemLongClickListenerMap != null){
-            return mOnMultipleItemLongClickListenerMap.get(childView.getId()).onProviderLongClick(childView, holder.getAdapterPosition() - getStartNum());
+            return mOnMultipleItemLongClickListenerMap.get(childView.getId()).onProviderLongClick(this, childView, holder.getAdapterPosition() - getStartNum());
         }
         return false;
     }
 
     @Override
-    public void onProviderClick(MultipleViewHolder viewHolder, View view, int position) {
+    public void onProviderClick(AbsItemProvider<M, VH> provider, MultipleViewHolder viewHolder, View view, int position) {
         if (mOnMultipleItemClickListenerMap != null) {
-            mOnMultipleItemClickListenerMap.get(view.getId()).onProviderClick(viewHolder, view, position - getStartNum());
+            mOnMultipleItemClickListenerMap.get(view.getId()).onProviderClick(provider, viewHolder, view, position - getStartNum());
         }
     }
 
     @Override
-    public boolean onProviderLongClick(View view, int position) {
+    public boolean onProviderLongClick(AbsItemProvider<M, VH> provider, View view, int position) {
         if (mOnMultipleItemLongClickListenerMap != null) {
-            return mOnMultipleItemLongClickListenerMap.get(view.getId()).onProviderLongClick(view, position - getStartNum());
+            return mOnMultipleItemLongClickListenerMap.get(view.getId()).onProviderLongClick(provider, view, position - getStartNum());
         }
         return false;
     }
+
 
 
     public OnProviderItemClickListener getOnProviderClickListener() {
         return mOnProviderClickListener;
     }
 
-    public AbsItemProvider setOnProviderClickListener(OnProviderItemClickListener onProviderClickListener) {
+    public AbsItemProvider setOnProviderClickListener(OnProviderItemClickListener<AbsItemProvider<M, VH>> onProviderClickListener) {
         mOnProviderClickListener = onProviderClickListener;
         return this;
     }
@@ -126,11 +127,11 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
         return mOnProviderLongClickListener;
     }
 
-    public void setOnProviderLongClickListener(OnProviderLongClickListener onProviderLongClickListener) {
+    public void setOnProviderLongClickListener(OnProviderLongClickListener<AbsItemProvider<M, VH>> onProviderLongClickListener) {
         mOnProviderLongClickListener = onProviderLongClickListener;
     }
 
-    public AbsItemProvider<M, VH> setOnClickViewListener(int viewId, OnProviderItemClickListener listener) {
+    public AbsItemProvider<M, VH> setOnClickViewListener(int viewId, OnProviderItemClickListener<AbsItemProvider<M, VH>> listener) {
         if (mOnMultipleItemClickListenerMap == null){
             mOnMultipleItemClickListenerMap = new HashMap<>();
         }
@@ -138,7 +139,7 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
         return this;
     }
 
-    public AbsItemProvider<M, VH> setOnLongClickViewListener(int viewId, OnProviderLongClickListener listener) {
+    public AbsItemProvider<M, VH> setOnLongClickViewListener(int viewId, OnProviderLongClickListener<AbsItemProvider<M, VH>> listener) {
         if (mOnMultipleItemLongClickListenerMap == null){
             mOnMultipleItemLongClickListenerMap = new HashMap<>();
         }
@@ -146,11 +147,11 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
         return this;
     }
 
-    public Map<Integer, OnProviderItemClickListener> getOnMultipleItemClickListenerMap() {
+    public Map<Integer, OnProviderItemClickListener<AbsItemProvider<M, VH>>> getOnMultipleItemClickListenerMap() {
         return mOnMultipleItemClickListenerMap;
     }
 
-    public Map<Integer, OnProviderLongClickListener> getOnMultipleItemLongClickListenerMap() {
+    public Map<Integer, OnProviderLongClickListener<AbsItemProvider<M, VH>>> getOnMultipleItemLongClickListenerMap() {
         return mOnMultipleItemLongClickListenerMap;
     }
 
@@ -234,6 +235,10 @@ public abstract class AbsItemProvider<M, VH extends MultipleViewHolder> extends 
 
     public boolean isExpand() {
         return expand;
+    }
+
+    public void onItemAfterSwipe(int position){
+
     }
 
     public void setExpand(boolean expand) {
